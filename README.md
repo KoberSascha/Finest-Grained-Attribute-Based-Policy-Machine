@@ -154,6 +154,8 @@ ResponseBody
 > **_BE AWARE_**  
 > Deleting an application causes a complete delete of all connected nodes! 
 
+> This endpoint is not implemented so far
+
 DELETE `{baseUrl}/application/{applicationId}`
 
 
