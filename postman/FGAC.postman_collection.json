@@ -4027,8 +4027,11 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"packages": {},
-										"type": "text/javascript"
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
@@ -4037,7 +4040,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "  {\r\n    \"identityId\": \"{{identityA}}\",\r\n    \"applicationName\": \"TestApplication\"\r\n  }",
+									"raw": "  {\r\n    \"applicationId\": \"{{application2}}\",    \r\n    \"applicationName\": \"TestApplication2#{{application2}}\",\r\n    \"identityId\": \"{{identityA}}\"\r\n  }",
 									"options": {
 										"raw": {
 											"language": "json"

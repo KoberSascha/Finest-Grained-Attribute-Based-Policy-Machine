@@ -76,8 +76,8 @@ public class ApplicationServiceBean implements ApplicationService {
     }
 
     @Override
-    public Optional<ApplicationDTO> getApplication(UUID objectId) {
-        return applicationClazzRepository.findById(objectId).map(aNode -> new ApplicationDTO(aNode.getId(), aNode.getName(), aNode.getIdentityId()));
+    public Optional<ApplicationDTO> getApplication(UUID applicationId) {
+        return applicationClazzRepository.findById(applicationId).map(aNode -> new ApplicationDTO(aNode.getId(), aNode.getName(), aNode.getIdentityId()));
     }
 
 

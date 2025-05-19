@@ -34,7 +34,21 @@ public class ApplicationController {
     public ResponseEntity<Object> createNode(@RequestBody ApplicationDTO requestDTO) throws BadRequestException {
 
 
+        if (requestDTO.getApplicationId() == null) {
+            throw new BadRequestException("Field 'applicationId' is required.");
+        }
+
+        if (requestDTO.getApplicationName() == null || requestDTO.getApplicationName().trim().isEmpty()) {
+            throw new BadRequestException("Field 'applicationName' is required and must not be blank.");
+        }
+
+        if (requestDTO.getIdentityId() == null) {
+            throw new BadRequestException("Field 'identityId' is required.");
+        }
+
+
         verifyApplicationExists(requestDTO.getApplicationId(), false);
+
 
         ApplicationClazz nodeDTO = new ApplicationClazz();
         //set unique ID
@@ -81,6 +95,7 @@ public class ApplicationController {
         return new ResponseEntity<>(applicationService.patchApplication(applicationId, requestDTO), HttpStatus.OK);
 
     }
+
 
    /*
 
