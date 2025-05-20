@@ -34,7 +34,6 @@ Furthermore, the data provider can not only define what a data user is allowed t
 
 
 ## How it works
-***More detailed informations are comming soon.***
 
 ### Abstract Layout
 [<img src="documentation/img/graph_standard_application_properties_digit_access.png" width="800"/>](documentation/img/graph_standard_application_properties_digit_access.png)
