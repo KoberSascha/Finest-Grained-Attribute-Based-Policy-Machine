@@ -1,16 +1,20 @@
-package com.transit.graphbased_v2.service.helper;
+package com.datatrust.graphbased_v2.service.helper;
 
-import com.transit.graphbased_v2.controller.dto.DigitsAccessDTO;
-import com.transit.graphbased_v2.controller.dto.OAPropertiesDTO;
-import com.transit.graphbased_v2.controller.dto.ReadAbleDigitsDTO;
-import com.transit.graphbased_v2.domain.graph.nodes.ObjectAttributeClazz;
-import com.transit.graphbased_v2.domain.graph.nodes.ObjectAttributeExtendedClazz;
+import com.datatrust.graphbased_v2.controller.dto.DigitsAccessDTO;
+import com.datatrust.graphbased_v2.controller.dto.OAPropertiesDTO;
+import com.datatrust.graphbased_v2.controller.dto.ReadAbleDigitsDTO;
+import com.datatrust.graphbased_v2.domain.graph.nodes.ObjectAttributeClazz;
+import com.datatrust.graphbased_v2.domain.graph.nodes.ObjectAttributeExtendedClazz;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 
 @Component
 public class AccessValidator {
+
+    private static Set<String> safeSet(Set<String> s) {
+        return (s == null) ? java.util.Collections.emptySet() : s;
+    }
 
     public Set<String> matchPropertiesAgainstDigitAccess() {
 
@@ -19,7 +23,6 @@ public class AccessValidator {
 
         return combinedProperties;
     }
-
 
     public ObjectAttributeExtendedClazz combineAllOaForReadingAccess(List<ObjectAttributeExtendedClazz> oAs) {
 
@@ -71,7 +74,6 @@ public class AccessValidator {
         return temp2;
     }
 
-
     public Set<DigitsAccessDTO> combineDigitAccessPropertiesSets(Set<DigitsAccessDTO> digitAccess1, Set<DigitsAccessDTO> digitAccess2) {
         // combines two digitAccess
 
@@ -99,7 +101,6 @@ public class AccessValidator {
         return digitsAccessProperties;
     }
 
-
     public Set<ReadAbleDigitsDTO> combineDigitAccessProperties(DigitsAccessDTO digitAccess1, DigitsAccessDTO digitAccess2) {
         //combines two sets
         //example
@@ -122,7 +123,6 @@ public class AccessValidator {
 
         return mergedResult;
     }
-
 
     private List<ReadAbleDigitsDTO> mergeRanges(List<ReadAbleDigitsDTO> ranges) {
         if (ranges.isEmpty()) return ranges;
@@ -151,7 +151,6 @@ public class AccessValidator {
 
         return merged;
     }
-
 
     public Set<String> getPropertiesByString(ObjectAttributeExtendedClazz oa, String type) {
 
@@ -238,66 +237,55 @@ public class AccessValidator {
         return validatedAccess;
     }
 
-
-    public ObjectAttributeClazz validateRightsPropertiesNonDigitAccess(Set<String> givingReadProperties, Set<String> givingWriteProperties, Set<String> givingShareReadProperties, Set<String> givingShareWriteProperties, ObjectAttributeExtendedClazz myRights) {
+    public ObjectAttributeClazz validateRightsPropertiesNonDigitAccess(
+            Set<String> givingReadProperties,
+            Set<String> givingWriteProperties,
+            Set<String> givingShareReadProperties,
+            Set<String> givingShareWriteProperties,
+            ObjectAttributeExtendedClazz myRights
+    ) {
         // myRights included read, write, share rights which I have
         // givingProperties are the access/rights which I want to give someone
 
-        //####Valditation Rules######
-        //properties have the new properties to update
-        //validation that writeProperties can just be the readProperties or less
-        //validation that shareReadProperties can just be readProperties or less
-        //validation that shareWriteProperties can just be writeProperties or less
-
-        //validation that readProperties can only be my shareReadProperties (I can only give readProperties which are allowed for me to share)
-        //validation that writeProperties can only be my writeReadProperties (I can only give writeProperties which are allowed for me to share)
-
-
         ObjectAttributeClazz validatedOaNode = new ObjectAttributeClazz();
-        Set<String> filteredProperties;
 
-        //readProperties
-        filteredProperties = new HashSet<>();
-        filteredProperties.addAll(givingReadProperties);
-        //remove all which are not in my readProperties
-        filteredProperties.retainAll(myRights.getReadProperties());
-        //remove all which are not in my shareReadProperties
-        filteredProperties.retainAll(myRights.getShareReadProperties());
-        validatedOaNode.setReadProperties(filteredProperties);
+        // Treat null as empty
+        Set<String> giveRead = safeSet(givingReadProperties);
+        Set<String> giveWrite = safeSet(givingWriteProperties);
+        Set<String> giveShareRead = safeSet(givingShareReadProperties);
+        Set<String> giveShareWrite = safeSet(givingShareWriteProperties);
 
-        //writeProperties
-        filteredProperties = new HashSet<>();
-        filteredProperties.addAll(givingWriteProperties);
-        //remove all which are not in givingReadProperties (because I can't write what I can't read)
-        filteredProperties.retainAll(givingReadProperties);
-        //remove all which are not in my writeProperties
-        filteredProperties.retainAll(myRights.getWriteProperties());
-        //remove all which are not in my shareWriteProperties
-        filteredProperties.retainAll(myRights.getShareWriteProperties());
-        validatedOaNode.setWriteProperties(filteredProperties);
+        Set<String> myRead = (myRights == null) ? Collections.emptySet() : safeSet(myRights.getReadProperties());
+        Set<String> myWrite = (myRights == null) ? Collections.emptySet() : safeSet(myRights.getWriteProperties());
+        Set<String> myShareRead = (myRights == null) ? Collections.emptySet() : safeSet(myRights.getShareReadProperties());
+        Set<String> myShareWrite = (myRights == null) ? Collections.emptySet() : safeSet(myRights.getShareWriteProperties());
 
-        //shareReadProperties
-        filteredProperties = new HashSet<>();
-        filteredProperties.addAll(givingShareReadProperties);
-        //remove all which are not in the givingReadProperties (because I can't allow more to share than I give to read)
-        filteredProperties.retainAll(givingReadProperties);
-        //remove all which are not in my shareReadProperties
-        filteredProperties.retainAll(myRights.getShareReadProperties());
-        validatedOaNode.setShareReadProperties(filteredProperties);
+        // readProperties: giveRead ∩ myRead ∩ myShareRead
+        Set<String> filtered = new HashSet<>(giveRead);
+        filtered.retainAll(myRead);
+        filtered.retainAll(myShareRead);
+        validatedOaNode.setReadProperties(filtered);
 
-        //shareWriteProperties
-        filteredProperties = new HashSet<>();
-        filteredProperties.addAll(givingShareWriteProperties);
-        //remove all which are not in the givingWriteProperties (because I can't allow more to share than I give to write)
-        filteredProperties.retainAll(givingWriteProperties);
-        //remove all which are not in my shareReadProperties
-        filteredProperties.retainAll(myRights.getShareReadProperties());
-        //remove all which are not in my shareWriteProperties
-        filteredProperties.retainAll(myRights.getShareWriteProperties());
-        //remove all which are not in givingShareReadProperties (because I can't forgive other writeProperties than readProperties)
-        filteredProperties.retainAll(givingShareReadProperties);
+        // writeProperties: giveWrite ∩ giveRead ∩ myWrite ∩ myShareWrite
+        filtered = new HashSet<>(giveWrite);
+        filtered.retainAll(giveRead); // can't write what you can't read
+        filtered.retainAll(myWrite);
+        filtered.retainAll(myShareWrite);
+        validatedOaNode.setWriteProperties(filtered);
 
-        validatedOaNode.setShareWriteProperties(filteredProperties);
+        // shareReadProperties: giveShareRead ∩ giveRead ∩ myShareRead
+        filtered = new HashSet<>(giveShareRead);
+        filtered.retainAll(giveRead); // can't allow sharing more than you give to read
+        filtered.retainAll(myShareRead);
+        validatedOaNode.setShareReadProperties(filtered);
+
+        // shareWriteProperties: giveShareWrite ∩ giveWrite ∩ giveShareRead ∩ myShareRead ∩ myShareWrite
+        filtered = new HashSet<>(giveShareWrite);
+        filtered.retainAll(giveWrite);     // can't allow share-write more than you give write
+        filtered.retainAll(giveShareRead); // write implies read
+        filtered.retainAll(myShareRead);   // must be allowed to share read
+        filtered.retainAll(myShareWrite);  // must be allowed to share write
+        validatedOaNode.setShareWriteProperties(filtered);
 
         return validatedOaNode;
     }
