@@ -1,4 +1,4 @@
-# Finest Grained Object-Specific Attribute-Based Policy Machine with Inheritance
+# Finest-Grained Object-Specific Attribute-Based Policy Machine with Inheritance
 
 This policy machine can be integrated into your infrastructure to provide fine-grained access control for your data. It does not enforce access rules but rather stores them and checks them for logical consistency and validity. Also it validates the inheritance of shared access.
 
