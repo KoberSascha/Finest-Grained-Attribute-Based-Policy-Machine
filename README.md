@@ -205,7 +205,7 @@ Objects are entities like 'Car', 'Person', 'Order' or 'Device' etc.
 
 ### Create an Object
 
-POST `{baseUrl}/application/{aplicationId}/object`
+POST `{baseUrl}/application/{applicationId}/object`
 
 Create O Node (an object or entity for example entity 'Car' with color, wheels, doors, fuel) for Identity #11c408e0-1fcd-11ee-be56-0242ac120005. 
 Define what properties the entity has (or rather which should be defined in the access control).
@@ -236,7 +236,7 @@ RequestBody
 
 ### Update an Object
 
-PUT `{baseUrl}/application/{aplicationId}/object/{objectId}`
+PUT `{baseUrl}/application/{applicationId}/object/{objectId}`
 
 Only the creator identity can update his object. 
 
@@ -283,7 +283,7 @@ See Section **Helpers** for renaming function for properties.
 
 ### Delete an Object
 
-DELETE `{baseUrl}/application/{aplicationId}/object/{objectId}?requestedById={byId}`
+DELETE `{baseUrl}/application/{applicationId}/object/{objectId}?requestedById={byId}`
 
 Only the creator-identity (`{byId}`) can delete his object. It deletes the object and the accesses for all identities.
 So if the object is deleted, the access is also deleted recursiv!
@@ -304,7 +304,7 @@ So if the object is deleted, the access is also deleted recursiv!
 
 ### Get access for an object for an identity
 
-GET `{baseUrl}/application/{aplicationId}/access/{objectId}?identityId={forId}&requestedById={byId}`
+GET `{baseUrl}/application/{applicationId}/access/{objectId}?identityId={forId}&requestedById={byId}`
 
 ResponseBody
 ```json
@@ -325,7 +325,7 @@ ResponseBody
 
 ### Get access for multiple objects for an identity
 
-GET `{baseUrl}/application/{aplicationId}/access/?identityId={forId}&requestedById={byId}`
+GET `{baseUrl}/application/{applicationId}/access/?identityId={forId}&requestedById={byId}`
 
 RequestBody
 ```json
@@ -368,7 +368,7 @@ ResponseBody
 
 ### Get access for all objects of an entity in an application
 
-GET `{baseUrl}/application/{aplicationId}/access/search/?identityId={forId}&requestedById={byId}&objectEntityClass={Class}&createdByMyOwn=true&pagesize=1000`
+GET `{baseUrl}/application/{applicationId}/access/search/?identityId={forId}&requestedById={byId}&objectEntityClass={Class}&createdByMyOwn=true&pagesize=1000`
 
 #### Optional Parameters
 - identityId
@@ -408,7 +408,7 @@ ResponseBody
 
 ### Create access for an object for an identity
 
-PUT `{baseUrl}/application/{aplicationId}/access/{objectId}?identityId={forId}&requestedById={byId}`
+PUT `{baseUrl}/application/{applicationId}/access/{objectId}?identityId={forId}&requestedById={byId}`
 
 Create Access for an object by {id} for an identity `{forId}` by the requesting identity `{byId}`.
 For example I will give you access to my object. Then the identityId is your Id and the requestedById is myId.
@@ -532,7 +532,7 @@ ResponseBody
 
 ### Update access for an object for an identity
 
-PUT `{baseUrl}/application/{aplicationId}/access/{objectId}?identityId={forId}&requestedById={byId}`
+PUT `{baseUrl}/application/{applicationId}/access/{objectId}?identityId={forId}&requestedById={byId}`
 
 Update Access for an object by {id} for an identity `{forId}` by the requesting identity `{byId}`.
 Be aware of the validation effects.
@@ -584,7 +584,7 @@ see Section **Create access for an object for an identity** -> **With defined di
 
 ### Delete access for an object for an identity
 
-DELETE `{baseUrl}/application/{aplicationId}/access/{objectId}?identityId={forId}&requestedById={byId}`
+DELETE `{baseUrl}/application/{applicationId}/access/{objectId}?identityId={forId}&requestedById={byId}`
 
 Delete access for an object for an identity `{forId}` by a identity `{byId}`.
 
@@ -600,7 +600,7 @@ For example: Car has a new property 'HorsePower' and it need to be in all of my 
 I can use this endpoint.
 
 
-POST `{baseUrl}/application/{aplicationId}/helpers/entity/addProperty?requestedById={byId}`
+POST `{baseUrl}/application/{applicationId}/helpers/entity/addProperty?requestedById={byId}`
 
 RequestBody
 ```json
@@ -613,7 +613,7 @@ RequestBody
 ### Rename Property to all my objects of an Entity
 When my Entity has a renamed property like "HorsePower" is now "Hp" then I can use this Endpoint to change the property name.
 
-POST `{baseUrl}/application/{aplicationId}/helpers/entity/renameProperty?requestedById={byId}`
+POST `{baseUrl}/application/{applicationId}/helpers/entity/renameProperty?requestedById={byId}`
 
 RequestBody
 ```json
