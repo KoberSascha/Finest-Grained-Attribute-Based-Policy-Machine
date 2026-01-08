@@ -266,9 +266,9 @@ ResponseBody
 ```
 ---
 
-**IMPORTANT**: If the properties changed, the access is also changed recursiv! So for the owner the identityProperties will be set to the follwing example. If there a new properties, the will be just added to your access (non-recursiv). If properties are deleted, the will be deleted from you access and also recursiv.
+**IMPORTANT**: If the properties changed, the access is also changed recursiv! So for the owner the identityProperties will be set to the follwing example. If there a new properties, the will be just added to your access (non-recursiv). If properties are deleted, the will be deleted from your access and also removed recursiv.
 
-For now there is no renaming function for properties.
+See Section **Helpers** for renaming function for properties.
 
 ```json
 {
@@ -418,15 +418,11 @@ For example I will give you access to my object. Then the identityId is your Id 
 RequestBody
 ```json
 {
-    "identityProperties":
-      {
-        "readProperties": ["color, wheels, fuel"],
-        "writeProperties":  ["color, doors, fuel"],
-        "shareReadProperties":  ["color"],
-        "shareWriteProperties":  ["color"]
-      }
+    "readProperties": ["color, wheels, fuel"],
+    "writeProperties":  ["color, doors, fuel"],
+    "shareReadProperties":  ["color"],
+    "shareWriteProperties":  ["color, fuel"]
 }
-```
 
 ResponseBody
 ```json
@@ -454,44 +450,42 @@ Also the digit access rules will be combined if the overlap. See response.
 RequestBody
 ```json
 {
-    "identityProperties":
-      {
-        "readProperties": ["color, wheels, fuel"],
-        "writeProperties":  ["color, doors, fuel"],
-        "shareReadProperties":  ["color"],
-        "shareWriteProperties":  ["color"],
-        "digitsAccess": [
-            {
-                "property": "wheels",
-                "readableDigits": [
-                    {
-                        "readableDigitsFrom": 1,
-                        "readableDigitsTo": 8
-                    },
-                    {
-                        "readableDigitsFrom": 10,
-                        "readableDigitsTo": 15
-                    },
-                    {
-                        "readableDigitsFrom": 1,
-                        "readableDigitsTo": 4
-                    }
-                ],
-                "type": "shareReadProperties"
-            },
-            {
-                "property": "color",
-                "readableDigits": [
-                    {
-                        "readableDigitsFrom": 3,
-                        "readableDigitsTo": 10
-                    }
-                ],
-                "type": "readProperties"
-            }
-        ]
-      }
+  "readProperties": ["color", "wheels", "fuel"],
+  "writeProperties": ["color", "doors", "fuel"],
+  "shareReadProperties": ["color"],
+  "shareWriteProperties": ["color"],
+  "digitsAccess": [
+    {
+      "property": "wheels",
+      "readableDigits": [
+        {
+          "readableDigitsFrom": 1,
+          "readableDigitsTo": 8
+        },
+        {
+          "readableDigitsFrom": 10,
+          "readableDigitsTo": 15
+        },
+        {
+          "readableDigitsFrom": 1,
+          "readableDigitsTo": 4
+        }
+      ],
+      "type": "shareReadProperties"
+    },
+    {
+      "property": "color",
+      "readableDigits": [
+        {
+          "readableDigitsFrom": 3,
+          "readableDigitsTo": 10
+        }
+      ],
+      "type": "readProperties"
+    }
+  ]
 }
+
 ```
 
 ResponseBody
@@ -549,13 +543,10 @@ Be aware of the validation effects.
 RequestBody
 ```json
 {
-    "identityProperties":
-      {
-        "readProperties": ["color, wheels, fuel"],
-        "writeProperties":  ["color, doors, fuel"],
-        "shareReadProperties":  ["color"],
-        "shareWriteProperties":  ["color, fuel"]
-      }
+    "readProperties": ["color, wheels, fuel"],
+    "writeProperties":  ["color, doors, fuel"],
+    "shareReadProperties":  ["color"],
+    "shareWriteProperties":  ["color, fuel"]
 }
 ```
 
@@ -581,11 +572,8 @@ ResponseBody
 RequestBody
 ```json
 {
-    "identityProperties":
-      {
-        "readProperties": ["color, wheels, fuel"],
-        "writeProperties":  ["color, doors, fuel"]     
-      }
+    "readProperties": ["color, wheels, fuel"],
+    "writeProperties":  ["color, doors, fuel"]      
 }
 ```
 
