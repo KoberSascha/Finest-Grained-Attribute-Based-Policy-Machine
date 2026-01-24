@@ -7,7 +7,7 @@ This policy machine can be integrated into your infrastructure to provide fine-g
 
  The neo4J database can be started in Docker via the `docker-compose.yml` in the directory. The ***docker-compose*** command is commented in the file.
 
- Official public docker image of this repository:
+ Official public docker image of this repository (Last update 24.01.2026):
 
  `docker pull saschakober/finest-grained-policy-machine`
 
