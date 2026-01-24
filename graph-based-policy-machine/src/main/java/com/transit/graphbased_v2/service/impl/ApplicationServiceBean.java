@@ -1,15 +1,15 @@
-package com.transit.graphbased_v2.service.impl;
+package com.datatrust.graphbased_v2.service.impl;
 
-import com.transit.graphbased_v2.controller.dto.ApplicationDTO;
-import com.transit.graphbased_v2.domain.graph.nodes.ApplicationClazz;
-import com.transit.graphbased_v2.domain.graph.nodes.ObjectAttributeExtendedClazz;
-import com.transit.graphbased_v2.exceptions.BadRequestException;
-import com.transit.graphbased_v2.exceptions.NodeIdExistsException;
-import com.transit.graphbased_v2.exceptions.NodeNotFoundException;
-import com.transit.graphbased_v2.performacelogging.LogExecutionTime;
-import com.transit.graphbased_v2.repository.*;
-import com.transit.graphbased_v2.service.ApplicationService;
-import com.transit.graphbased_v2.service.helper.UpdateRightsRecursive;
+import com.datatrust.graphbased_v2.controller.dto.ApplicationDTO;
+import com.datatrust.graphbased_v2.domain.graph.nodes.ApplicationClazz;
+import com.datatrust.graphbased_v2.domain.graph.nodes.ObjectAttributeExtendedClazz;
+import com.datatrust.graphbased_v2.exceptions.BadRequestException;
+import com.datatrust.graphbased_v2.exceptions.NodeIdExistsException;
+import com.datatrust.graphbased_v2.exceptions.NodeNotFoundException;
+import com.datatrust.graphbased_v2.performacelogging.LogExecutionTime;
+import com.datatrust.graphbased_v2.repository.*;
+import com.datatrust.graphbased_v2.service.ApplicationService;
+import com.datatrust.graphbased_v2.service.helper.UpdateRightsRecursive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -164,6 +164,23 @@ public class ApplicationServiceBean implements ApplicationService {
         applicationClazzRepository.save(aNode);
 
         return new ApplicationDTO(aNode.getId(), aNode.getName(), aNode.getIdentityId());
+    }
+
+
+    @Override
+    public long deleteApplication(UUID applicationId, UUID identityId) {
+
+        if (!applicationClazzRepository.existsById(applicationId)) {
+            throw new NodeNotFoundException(applicationId);
+        }
+
+        long deletedCount = helpersRepository.deleteApplication(applicationId, identityId);
+
+        if (deletedCount == 0) {
+            throw new NodeNotFoundException(applicationId);
+        }
+
+        return deletedCount;
     }
 
 

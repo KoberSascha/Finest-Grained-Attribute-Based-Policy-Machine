@@ -1,11 +1,11 @@
-package com.transit.graphbased_v2.controller;
+package com.datatrust.graphbased_v2.controller;
 
-import com.transit.graphbased_v2.controller.dto.ApplicationDTO;
-import com.transit.graphbased_v2.domain.graph.nodes.ApplicationClazz;
-import com.transit.graphbased_v2.domain.graph.nodes.ClazzType;
-import com.transit.graphbased_v2.exceptions.BadRequestException;
-import com.transit.graphbased_v2.service.ApplicationService;
-import com.transit.graphbased_v2.service.impl.AccessServiceBean;
+import com.datatrust.graphbased_v2.controller.dto.ApplicationDTO;
+import com.datatrust.graphbased_v2.domain.graph.nodes.ApplicationClazz;
+import com.datatrust.graphbased_v2.domain.graph.nodes.ClazzType;
+import com.datatrust.graphbased_v2.exceptions.BadRequestException;
+import com.datatrust.graphbased_v2.service.ApplicationService;
+import com.datatrust.graphbased_v2.service.impl.AccessServiceBean;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -97,36 +97,38 @@ public class ApplicationController {
     }
 
 
-   /*
+    /*
 
-    @GetMapping("/{id}")
-    public ResponseEntity getNode(@PathVariable("id") UUID id) {
-
-
-        var opt = objectService.getObject(id);
-
-        if (opt.isEmpty()) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity(opt.get(), HttpStatus.OK);
-        }
-    }
+     @GetMapping("/{id}")
+     public ResponseEntity getNode(@PathVariable("id") UUID id) {
 
 
+         var opt = objectService.getObject(id);
+
+         if (opt.isEmpty()) {
+             return new ResponseEntity(HttpStatus.NOT_FOUND);
+         } else {
+             return new ResponseEntity(opt.get(), HttpStatus.OK);
+         }
+     }
+
+
+ */
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteNode(@PathVariable("id") UUID id, @RequestParam(value = "requestedById") UUID requestedById) {
+    public ResponseEntity deleteNode(
+            @PathVariable UUID id,
+            @RequestParam UUID requestedById
+    ) {
+        long deletedCount = applicationService.deleteApplication(id, requestedById);
 
-        if (requestedById == null) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        if (deletedCount == 0) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No nodes found to delete for this application.");
         }
 
-        applicationService.deleteObject(id, requestedById);
         return new ResponseEntity(HttpStatus.OK);
 
     }
-
-
-*/
 
 
     private void verifyApplicationExists(UUID applicationId, boolean shouldExist) throws BadRequestException {

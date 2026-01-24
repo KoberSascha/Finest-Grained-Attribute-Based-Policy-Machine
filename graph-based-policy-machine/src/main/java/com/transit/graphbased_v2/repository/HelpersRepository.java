@@ -1,10 +1,10 @@
-package com.transit.graphbased_v2.repository;
+package com.datatrust.graphbased_v2.repository;
 
-import com.transit.graphbased_v2.domain.graph.nodes.ApplicationClazz;
-import com.transit.graphbased_v2.domain.graph.nodes.ObjectAttributeExtendedClazz;
-import com.transit.graphbased_v2.domain.graph.nodes.ObjectClazz;
-import com.transit.graphbased_v2.service.helper.AccessValidator;
-import com.transit.graphbased_v2.service.helper.ParseRightsResult;
+import com.datatrust.graphbased_v2.domain.graph.nodes.ApplicationClazz;
+import com.datatrust.graphbased_v2.domain.graph.nodes.ObjectAttributeExtendedClazz;
+import com.datatrust.graphbased_v2.domain.graph.nodes.ObjectClazz;
+import com.datatrust.graphbased_v2.service.helper.AccessValidator;
+import com.datatrust.graphbased_v2.service.helper.ParseRightsResult;
 import lombok.extern.slf4j.Slf4j;
 import org.neo4j.driver.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,4 +132,25 @@ public class HelpersRepository {
     }
 
 
+    public long deleteApplication(UUID applicationId, UUID identityId) {
+
+        String query = String.format(
+                " MATCH (a:A {id: '%s', identityId: '%s'}) " +
+                        "OPTIONAL MATCH (a)-[*0..]->(n) " +
+                        "WITH collect(DISTINCT n) AS nodes " +
+                        "FOREACH (x IN nodes | DETACH DELETE x) " +
+                        "RETURN size(nodes) AS deletedCount",
+                applicationId, identityId
+        );
+
+        Result result = graphRepository.execute(query, false);
+
+        if (!result.hasNext()) {
+            return 0;
+        }
+
+        var row = result.next();
+        return row.get("deletedCount").asLong();
+    }
 }
+
