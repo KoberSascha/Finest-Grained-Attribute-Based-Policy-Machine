@@ -151,12 +151,17 @@ ResponseBody
 
 #### Delete
 > **_BE AWARE_**  
-> Deleting an application causes a complete delete of all connected nodes! 
-
-> This endpoint is not implemented so far
+> Deleting an application causes a complete delete of all connected nodes (except identities)! 
 
 DELETE `{baseUrl}/application/{applicationId}`
-
+RequestBody
+```json
+ [ 
+    {
+    "requestedById": "6bd841e2-7c4f-4c52-9a77-81ae6f8c1b36"
+    }  
+  ]
+```
 
 ### Identity
 
