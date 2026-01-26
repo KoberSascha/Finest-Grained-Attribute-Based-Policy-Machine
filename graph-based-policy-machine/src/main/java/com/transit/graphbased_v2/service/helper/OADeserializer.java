@@ -1,8 +1,8 @@
-package com.transit.graphbased_v2.service.helper;
+package com.datatrust.graphbased_v2.service.helper;
 
-import com.transit.graphbased_v2.controller.dto.DigitsAccessDTO;
-import com.transit.graphbased_v2.domain.graph.nodes.ObjectAttributeClazz;
-import com.transit.graphbased_v2.domain.graph.nodes.ObjectAttributeExtendedClazz;
+import com.datatrust.graphbased_v2.controller.dto.DigitsAccessDTO;
+import com.datatrust.graphbased_v2.domain.graph.nodes.ObjectAttributeClazz;
+import com.datatrust.graphbased_v2.domain.graph.nodes.ObjectAttributeExtendedClazz;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Matcher;

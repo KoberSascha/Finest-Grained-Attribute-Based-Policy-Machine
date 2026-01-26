@@ -1,6 +1,6 @@
-package com.transit.graphbased_v2.transferobjects;
+package com.datatrust.graphbased_v2.transferobjects;
 
-import com.transit.graphbased_v2.controller.dto.DigitsAccessDTO;
+import com.datatrust.graphbased_v2.controller.dto.DigitsAccessDTO;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;

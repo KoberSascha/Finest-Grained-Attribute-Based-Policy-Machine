@@ -1,9 +1,9 @@
-package com.transit.graphbased_v2.service.helper;
+package com.datatrust.graphbased_v2.service.helper;
 
-import com.transit.graphbased_v2.controller.dto.DigitsAccessDTO;
-import com.transit.graphbased_v2.domain.graph.nodes.*;
-import com.transit.graphbased_v2.performacelogging.LogExecutionTime;
-import com.transit.graphbased_v2.repository.ObjectAttributeClazzRepository;
+import com.datatrust.graphbased_v2.controller.dto.DigitsAccessDTO;
+import com.datatrust.graphbased_v2.domain.graph.nodes.*;
+import com.datatrust.graphbased_v2.performacelogging.LogExecutionTime;
+import com.datatrust.graphbased_v2.repository.ObjectAttributeClazzRepository;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
 import org.neo4j.driver.Value;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-import static com.transit.graphbased_v2.service.helper.StringListHelper.listToSetString;
+import static com.datatrust.graphbased_v2.service.helper.StringListHelper.listToSetString;
 import static org.neo4j.driver.internal.value.NullValue.NULL;
 
 @Component

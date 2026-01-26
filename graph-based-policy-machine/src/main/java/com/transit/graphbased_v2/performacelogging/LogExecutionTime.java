@@ -1,4 +1,4 @@
-package com.transit.graphbased_v2.performacelogging;
+package com.datatrust.graphbased_v2.performacelogging;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,11 +1,11 @@
-package com.transit.graphbased_v2.repository;
+package com.datatrust.graphbased_v2.repository;
 
-import com.transit.graphbased_v2.common.ConnectionType;
-import com.transit.graphbased_v2.common.Constants;
-import com.transit.graphbased_v2.config.StartConfiguration;
-import com.transit.graphbased_v2.domain.graph.relationships.Relationship;
-import com.transit.graphbased_v2.domain.graph.relationships.RelationshipConnection;
-import com.transit.graphbased_v2.repository.helper.RewriteBoolean;
+import com.datatrust.graphbased_v2.common.ConnectionType;
+import com.datatrust.graphbased_v2.common.Constants;
+import com.datatrust.graphbased_v2.config.StartConfiguration;
+import com.datatrust.graphbased_v2.domain.graph.relationships.Relationship;
+import com.datatrust.graphbased_v2.domain.graph.relationships.RelationshipConnection;
+import com.datatrust.graphbased_v2.repository.helper.RewriteBoolean;
 import lombok.extern.slf4j.Slf4j;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.*;

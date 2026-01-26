@@ -1,22 +1,21 @@
-package com.transit.graphbased_v2.service.impl;
+package com.datatrust.graphbased_v2.service.impl;
 
-import com.transit.graphbased_v2.controller.dto.DigitsAccessDTO;
-import com.transit.graphbased_v2.controller.dto.OAPropertiesDTO;
-import com.transit.graphbased_v2.domain.graph.nodes.ClazzType;
-import com.transit.graphbased_v2.domain.graph.nodes.ObjectAttributeClazz;
-import com.transit.graphbased_v2.domain.graph.nodes.ObjectAttributeExtendedClazz;
-import com.transit.graphbased_v2.domain.graph.relationships.Relationship;
-import com.transit.graphbased_v2.exceptions.BadRequestException;
-import com.transit.graphbased_v2.exceptions.ForbiddenException;
-import com.transit.graphbased_v2.exceptions.NodeNotFoundException;
-import com.transit.graphbased_v2.performacelogging.LogExecutionTime;
-import com.transit.graphbased_v2.repository.*;
-import com.transit.graphbased_v2.service.AccessService;
-import com.transit.graphbased_v2.service.helper.AccessTransferComponentHelper;
-import com.transit.graphbased_v2.service.helper.AccessValidator;
-import com.transit.graphbased_v2.service.helper.DADeserializer;
-import com.transit.graphbased_v2.service.helper.UpdateRightsRecursive;
-import com.transit.graphbased_v2.transferobjects.AccessTransferComponent;
+import com.datatrust.graphbased_v2.controller.dto.*;
+import com.datatrust.graphbased_v2.domain.graph.nodes.ClazzType;
+import com.datatrust.graphbased_v2.domain.graph.nodes.ObjectAttributeClazz;
+import com.datatrust.graphbased_v2.domain.graph.nodes.ObjectAttributeExtendedClazz;
+import com.datatrust.graphbased_v2.domain.graph.relationships.Relationship;
+import com.datatrust.graphbased_v2.exceptions.BadRequestException;
+import com.datatrust.graphbased_v2.exceptions.ForbiddenException;
+import com.datatrust.graphbased_v2.exceptions.NodeNotFoundException;
+import com.datatrust.graphbased_v2.performacelogging.LogExecutionTime;
+import com.datatrust.graphbased_v2.repository.*;
+import com.datatrust.graphbased_v2.service.AccessService;
+import com.datatrust.graphbased_v2.service.helper.AccessTransferComponentHelper;
+import com.datatrust.graphbased_v2.service.helper.AccessValidator;
+import com.datatrust.graphbased_v2.service.helper.DADeserializer;
+import com.datatrust.graphbased_v2.service.helper.UpdateRightsRecursive;
+import com.datatrust.graphbased_v2.transferobjects.AccessTransferComponent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -83,6 +82,66 @@ public class AccessServiceBean implements AccessService {
 
         return rights.map(entry -> accessTransferComponentHelper.getAccessTransferComponent(entry.getObjectAttributeClazz(), entry.getOId(), entry.getOEntityClazz(), identityId));
 
+    }
+
+
+    @Override
+    public Optional<AllAccessResponseDTO> getAllAccessForObject(UUID applicationId, UUID oId, UUID requestedById) {
+
+        var rightsOpt = rightsRepository.getAllRightsForObjectWithDigitAccess(applicationId, requestedById, oId);
+
+        if (rightsOpt.isEmpty() || rightsOpt.get().isEmpty()) {
+            return Optional.empty();
+        }
+
+        var rightsList = rightsOpt.get();
+
+        // for convenience: all identities that appear
+        List<UUID> allIdentityIds = rightsList.stream()
+                .map(IdentityObjectRightsDTO::getIdentityId)
+                .distinct()
+                .toList();
+
+
+        List<AccessEntryDTO> accessEntries = rightsList.stream().map(r -> {
+            OAPropertiesDTO props = new OAPropertiesDTO(
+                    r.getReadProperties(),
+                    r.getWriteProperties(),
+                    r.getShareReadProperties(),
+                    r.getShareWriteProperties(),
+                    r.getDigitsAccess() != null ? r.getDigitsAccess() : new HashSet<>()
+            );
+
+
+            AccessEntryDTO entry = new AccessEntryDTO();
+            entry.setIdentityId(r.getIdentityId());
+            entry.setSharedFromIdentityId(r.getSharedFromIdentityId());
+            entry.setSharedToIdentityIds(r.getSharedToIdentityIds().stream().toList());
+
+
+            entry.setSharedToIdentityIds(
+                    r.getSharedToIdentityIds() == null
+                            ? List.of()
+                            : r.getSharedToIdentityIds().stream().toList()
+            );
+
+
+            entry.setIdentityProperties(props);
+            return entry;
+        }).toList();
+
+        String entityClass = rightsList.stream()
+                .map(IdentityObjectRightsDTO::getEntityClass)
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElse(null);
+
+        AllAccessResponseDTO response = new AllAccessResponseDTO();
+        response.setObjectId(oId);
+        response.setObjectEntityClass(entityClass);
+        response.setAccess(accessEntries);
+
+        return Optional.of(response);
     }
 
 

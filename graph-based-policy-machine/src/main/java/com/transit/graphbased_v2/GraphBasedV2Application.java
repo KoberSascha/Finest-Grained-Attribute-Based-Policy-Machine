@@ -1,4 +1,4 @@
-package com.transit.graphbased_v2;
+package com.datatrust.graphbased_v2;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

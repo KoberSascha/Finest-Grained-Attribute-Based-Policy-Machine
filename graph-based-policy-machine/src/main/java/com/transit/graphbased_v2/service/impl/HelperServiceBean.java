@@ -1,11 +1,11 @@
-package com.transit.graphbased_v2.service.impl;
+package com.datatrust.graphbased_v2.service.impl;
 
-import com.transit.graphbased_v2.controller.dto.EntityPropertiesDTO;
-import com.transit.graphbased_v2.exceptions.BadRequestException;
-import com.transit.graphbased_v2.exceptions.ForbiddenException;
-import com.transit.graphbased_v2.repository.*;
-import com.transit.graphbased_v2.service.HelperService;
-import com.transit.graphbased_v2.service.helper.AccessTransferComponentHelper;
+import com.datatrust.graphbased_v2.controller.dto.EntityPropertiesDTO;
+import com.datatrust.graphbased_v2.exceptions.BadRequestException;
+import com.datatrust.graphbased_v2.exceptions.ForbiddenException;
+import com.datatrust.graphbased_v2.repository.*;
+import com.datatrust.graphbased_v2.service.HelperService;
+import com.datatrust.graphbased_v2.service.helper.AccessTransferComponentHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

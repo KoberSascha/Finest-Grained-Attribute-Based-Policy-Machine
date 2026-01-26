@@ -1,12 +1,12 @@
-package com.transit.graphbased_v2.controller;
+package com.datatrust.graphbased_v2.controller;
 
-import com.transit.graphbased_v2.controller.dto.*;
-import com.transit.graphbased_v2.exceptions.BadRequestException;
-import com.transit.graphbased_v2.exceptions.ForbiddenException;
-import com.transit.graphbased_v2.exceptions.NodeNotFoundException;
-import com.transit.graphbased_v2.service.AccessService;
-import com.transit.graphbased_v2.service.ApplicationService;
-import com.transit.graphbased_v2.transferobjects.AccessTransferComponent;
+import com.datatrust.graphbased_v2.controller.dto.*;
+import com.datatrust.graphbased_v2.exceptions.BadRequestException;
+import com.datatrust.graphbased_v2.exceptions.ForbiddenException;
+import com.datatrust.graphbased_v2.exceptions.NodeNotFoundException;
+import com.datatrust.graphbased_v2.service.AccessService;
+import com.datatrust.graphbased_v2.service.ApplicationService;
+import com.datatrust.graphbased_v2.transferobjects.AccessTransferComponent;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.jetbrains.annotations.NotNull;
@@ -40,7 +40,7 @@ public class AccessController {
     }
 
     @GetMapping("/{objectId}")
-    @Operation(summary = "Get access for an object for an identity by objectId")
+    @Operation(summary = "Get access data for an object for an identity by objectId")
     public ResponseEntity getAccessById(@PathVariable("applicationId") UUID applicationId, @PathVariable("objectId") UUID id, @RequestParam(value = "requestedById") UUID requestedById, @RequestParam(value = "identityId", required = false) UUID identityId) throws NodeNotFoundException {
 
         verifyApplicationExists(applicationId);
@@ -56,9 +56,8 @@ public class AccessController {
         final var responseDTO = createResponse(id, identityId, result.get());
 
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
-
-
     }
+
 
     @GetMapping()
     public ResponseEntity getAccessByList(@PathVariable("applicationId") UUID applicationId, @RequestParam(value = "requestedById", required = true) UUID requestedById, @RequestParam(value = "identityId", required = true) UUID identityId, @RequestBody AccessListDTO accessListDto) {
@@ -75,6 +74,26 @@ public class AccessController {
         return responseEntity;
     }
 
+
+    @GetMapping("/{objectId}/all")
+    @Operation(summary = "Get all access data for an object by objectId")
+    public ResponseEntity<?> getAllAccessByObjectId(
+            @PathVariable("applicationId") UUID applicationId,
+            @PathVariable("objectId") UUID objectId,
+            @RequestParam("requestedById") UUID requestedById
+    ) {
+        verifyApplicationExists(applicationId);
+
+        var result = accessService.getAllAccessForObject(applicationId, objectId, requestedById);
+
+        if (result.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(result.get(), HttpStatus.OK);
+    }
+
+
     @GetMapping("/search")
     public ResponseEntity getAccessByClass(@PathVariable("applicationId") UUID applicationId, @RequestParam(value = "requestedById") UUID requestedById, @RequestParam(value = "objectEntityClass") String objectEntityClass, @RequestParam(value = "identityId", required = false) UUID identityId, @RequestParam(value = "pagesize", required = false) Integer pagesize, @RequestParam(value = "createdByMyOwn") boolean createdByMyOwn) {
 
@@ -90,6 +109,7 @@ public class AccessController {
 
         return new ResponseEntity(new AccessResponseList(accessService.getAccessClazz(applicationId, objectEntityClass, requestedById, createdByMyOwn, identityId, pagesize).stream().map(oa -> createResponse(oa.getObjectId(), oa.getIdentityId(), oa)).toList()), HttpStatus.OK);
     }
+
 
     @PutMapping("/{objectId}")
     public ResponseEntity updateRights(@PathVariable("applicationId") UUID applicationId, @PathVariable("objectId") UUID id, @RequestParam(value = "requestedById") UUID requestedById, @RequestParam(value = "identityId") UUID identityId, @RequestBody OAPropertiesDTO oaPropertiesdto) {

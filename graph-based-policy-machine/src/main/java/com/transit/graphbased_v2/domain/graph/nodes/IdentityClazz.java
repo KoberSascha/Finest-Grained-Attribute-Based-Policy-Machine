@@ -1,4 +1,4 @@
-package com.transit.graphbased_v2.domain.graph.nodes;
+package com.datatrust.graphbased_v2.domain.graph.nodes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;

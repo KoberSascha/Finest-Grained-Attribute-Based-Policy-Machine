@@ -1,4 +1,4 @@
-package com.transit.graphbased_v2.exceptions;
+package com.datatrust.graphbased_v2.exceptions;
 
 
 import java.util.UUID;

@@ -1,7 +1,7 @@
-package com.transit.graphbased_v2.repository;
+package com.datatrust.graphbased_v2.repository;
 
-import com.transit.graphbased_v2.domain.graph.nodes.EntityClazz;
-import com.transit.graphbased_v2.performacelogging.LogExecutionTime;
+import com.datatrust.graphbased_v2.domain.graph.nodes.EntityClazz;
+import com.datatrust.graphbased_v2.performacelogging.LogExecutionTime;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,10 +11,10 @@ import java.util.UUID;
 @Repository
 
 public interface EntityClazzRepository extends Neo4jRepository<EntityClazz, UUID> {
-	
-	
-	List<EntityClazz> findAllByEntityClass(String entityClass);
-	
-	@LogExecutionTime
-	boolean existsEntityClazzByEntityClass(String entityClass);
+
+
+    List<EntityClazz> findAllByEntityClass(String entityClass);
+
+    @LogExecutionTime
+    boolean existsEntityClazzByEntityClass(String entityClass);
 }

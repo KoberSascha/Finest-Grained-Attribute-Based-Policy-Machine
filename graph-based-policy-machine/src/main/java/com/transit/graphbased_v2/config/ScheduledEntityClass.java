@@ -1,9 +1,9 @@
-//package com.transit.graphbased_v2.config;
+//package com.datatrust.graphbased_v2.config;
 //
-//import com.transit.graphbased_v2.domain.graph.nodes.EntityClazz;
-//import com.transit.graphbased_v2.domain.graph.relationships.EntityConnection;
-//import com.transit.graphbased_v2.repository.EntityClazzRepository;
-//import com.transit.graphbased_v2.repository.EntityConnectionRepository;
+//import com.datatrust.graphbased_v2.domain.graph.nodes.EntityClazz;
+//import com.datatrust.graphbased_v2.domain.graph.relationships.EntityConnection;
+//import com.datatrust.graphbased_v2.repository.EntityClazzRepository;
+//import com.datatrust.graphbased_v2.repository.EntityConnectionRepository;
 //import lombok.extern.slf4j.Slf4j;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.scheduling.annotation.Scheduled;

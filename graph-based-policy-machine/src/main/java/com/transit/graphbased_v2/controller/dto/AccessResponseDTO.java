@@ -1,4 +1,4 @@
-package com.transit.graphbased_v2.controller.dto;
+package com.datatrust.graphbased_v2.controller.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,8 +12,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccessResponseDTO {
-	private UUID objectId;
-	private String objectEntityClass;
-	private UUID identityId;
-	private OAPropertiesDTO objectProperties;
+    private UUID objectId;
+    private String objectEntityClass;
+    private UUID identityId;
+    private OAPropertiesDTO objectProperties;
 }

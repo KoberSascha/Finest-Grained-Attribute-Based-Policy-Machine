@@ -1,8 +1,8 @@
-package com.transit.graphbased_v2.service;
+package com.datatrust.graphbased_v2.service;
 
-import com.transit.graphbased_v2.domain.graph.nodes.IdentityClazz;
-import com.transit.graphbased_v2.exceptions.NodeIdExistsException;
-import com.transit.graphbased_v2.exceptions.NodeNotFoundException;
+import com.datatrust.graphbased_v2.domain.graph.nodes.IdentityClazz;
+import com.datatrust.graphbased_v2.exceptions.NodeIdExistsException;
+import com.datatrust.graphbased_v2.exceptions.NodeNotFoundException;
 
 import java.util.Optional;
 import java.util.UUID;

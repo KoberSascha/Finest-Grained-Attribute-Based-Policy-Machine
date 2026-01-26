@@ -1,10 +1,11 @@
-package com.transit.graphbased_v2.service;
+package com.datatrust.graphbased_v2.service;
 
-import com.transit.graphbased_v2.controller.dto.OAPropertiesDTO;
-import com.transit.graphbased_v2.exceptions.BadRequestException;
-import com.transit.graphbased_v2.exceptions.ForbiddenException;
-import com.transit.graphbased_v2.exceptions.NodeNotFoundException;
-import com.transit.graphbased_v2.transferobjects.AccessTransferComponent;
+import com.datatrust.graphbased_v2.controller.dto.AllAccessResponseDTO;
+import com.datatrust.graphbased_v2.controller.dto.OAPropertiesDTO;
+import com.datatrust.graphbased_v2.exceptions.BadRequestException;
+import com.datatrust.graphbased_v2.exceptions.ForbiddenException;
+import com.datatrust.graphbased_v2.exceptions.NodeNotFoundException;
+import com.datatrust.graphbased_v2.transferobjects.AccessTransferComponent;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +18,7 @@ public interface AccessService {
 
     public Optional<AccessTransferComponent> getAccess(UUID applicationId, UUID oId, UUID identityId, UUID requestedById) throws NodeNotFoundException;
 
+    public Optional<AllAccessResponseDTO> getAllAccessForObject(UUID applicationId, UUID oId, UUID requestedById) throws NodeNotFoundException;
 
     public List<AccessTransferComponent> getAccessList(UUID applicationId, Set<UUID> objectIds, UUID identityId, UUID requestedById);
 

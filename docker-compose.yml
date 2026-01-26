@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   spring-app:
-    image: saschakober/finest-grained-policy-machine:1.0
+    image: saschakober/finest-grained-policy-machine:1.2
     restart: unless-stopped 
     command: "java -Xms2G -Xmx48G -Xss1G -jar /app/app.jar"
     environment:

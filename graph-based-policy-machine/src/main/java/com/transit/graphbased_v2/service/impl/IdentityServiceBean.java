@@ -1,18 +1,18 @@
-package com.transit.graphbased_v2.service.impl;
+package com.datatrust.graphbased_v2.service.impl;
 
-import com.transit.graphbased_v2.controller.dto.ApplicationDTO;
-import com.transit.graphbased_v2.domain.graph.nodes.ClazzType;
-import com.transit.graphbased_v2.domain.graph.nodes.IdentityClazz;
-import com.transit.graphbased_v2.exceptions.ForbiddenException;
-import com.transit.graphbased_v2.exceptions.NodeIdExistsException;
-import com.transit.graphbased_v2.exceptions.NodeNotFoundException;
-import com.transit.graphbased_v2.repository.IdentityClazzRepository;
-import com.transit.graphbased_v2.repository.RelationshipConnectionRepository;
-import com.transit.graphbased_v2.repository.RightsRepository;
-import com.transit.graphbased_v2.service.AccessService;
-import com.transit.graphbased_v2.service.ApplicationService;
-import com.transit.graphbased_v2.service.IdentityService;
-import com.transit.graphbased_v2.service.ObjectService;
+import com.datatrust.graphbased_v2.controller.dto.ApplicationDTO;
+import com.datatrust.graphbased_v2.domain.graph.nodes.ClazzType;
+import com.datatrust.graphbased_v2.domain.graph.nodes.IdentityClazz;
+import com.datatrust.graphbased_v2.exceptions.ForbiddenException;
+import com.datatrust.graphbased_v2.exceptions.NodeIdExistsException;
+import com.datatrust.graphbased_v2.exceptions.NodeNotFoundException;
+import com.datatrust.graphbased_v2.repository.IdentityClazzRepository;
+import com.datatrust.graphbased_v2.repository.RelationshipConnectionRepository;
+import com.datatrust.graphbased_v2.repository.RightsRepository;
+import com.datatrust.graphbased_v2.service.AccessService;
+import com.datatrust.graphbased_v2.service.ApplicationService;
+import com.datatrust.graphbased_v2.service.IdentityService;
+import com.datatrust.graphbased_v2.service.ObjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

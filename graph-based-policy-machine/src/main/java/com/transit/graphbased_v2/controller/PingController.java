@@ -1,6 +1,6 @@
-package com.transit.graphbased_v2.controller;
+package com.datatrust.graphbased_v2.controller;
 
-import com.transit.graphbased_v2.controller.dto.ReturnPingDTO;
+import com.datatrust.graphbased_v2.controller.dto.ReturnPingDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

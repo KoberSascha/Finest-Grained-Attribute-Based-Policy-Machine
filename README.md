@@ -7,7 +7,7 @@ This policy machine can be integrated into your infrastructure to provide fine-g
 
  The neo4J database can be started in Docker via the `docker-compose.yml` in the directory. The ***docker-compose*** command is commented in the file.
 
- Official public docker image of this repository (Last update 24.01.2026):
+ Official public docker image of this repository (Last update 26.01.2026):
 
  `docker pull saschakober/finest-grained-policy-machine`
 
@@ -369,6 +369,37 @@ ResponseBody
 }
 
 ```
+
+
+### Get all access for one object 
+
+GET `{baseUrl}/application/{applicationId}/access/{objectId}/all&requestedById={byId}`
+
+
+ResponseBody
+```json
+{
+  {
+      "objectId": "d8a2e675-8d75-44ce-91ca-28ee2b20b4d3",
+      "objectEntityClass": "GroupObject",            
+      "access": {
+          "identityId":  "f7e1f51c-1dd6-40d1-8269-4055b99f6b2b",
+          "sharedFromIdentityId": "12345f51c-1dd6-40d1-8269-4055b99f6b2b",
+          "sharedToIdentityIds": ["7895552-1dd6-40d1-8269-4055b99f6b2b"],
+          "identityProperties": {
+              "readProperties":  ["color, wheels, fuel"],
+              "writeProperties": ["color, wheels, fuel"],
+              "shareReadProperties": ["color, wheels, fuel"],
+              "shareWriteProperties": ["color, wheels, fuel"]
+          }
+      }
+  }     
+}
+
+```
+
+
+
 
 
 ### Get access for all objects of an entity in an application

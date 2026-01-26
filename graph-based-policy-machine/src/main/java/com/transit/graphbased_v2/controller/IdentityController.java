@@ -1,12 +1,12 @@
-package com.transit.graphbased_v2.controller;
+package com.datatrust.graphbased_v2.controller;
 
-import com.transit.graphbased_v2.controller.dto.IdentityDTO;
-import com.transit.graphbased_v2.controller.dto.IdentityResponseDTO;
-import com.transit.graphbased_v2.domain.graph.nodes.ClazzType;
-import com.transit.graphbased_v2.domain.graph.nodes.IdentityClazz;
-import com.transit.graphbased_v2.exceptions.NodeIdExistsException;
-import com.transit.graphbased_v2.exceptions.NodeNotFoundException;
-import com.transit.graphbased_v2.service.IdentityService;
+import com.datatrust.graphbased_v2.controller.dto.IdentityDTO;
+import com.datatrust.graphbased_v2.controller.dto.IdentityResponseDTO;
+import com.datatrust.graphbased_v2.domain.graph.nodes.ClazzType;
+import com.datatrust.graphbased_v2.domain.graph.nodes.IdentityClazz;
+import com.datatrust.graphbased_v2.exceptions.NodeIdExistsException;
+import com.datatrust.graphbased_v2.exceptions.NodeNotFoundException;
+import com.datatrust.graphbased_v2.service.IdentityService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;

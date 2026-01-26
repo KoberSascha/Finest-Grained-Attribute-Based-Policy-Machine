@@ -1,8 +1,8 @@
-package com.transit.graphbased_v2.service.helper;
+package com.datatrust.graphbased_v2.service.helper;
 
-import com.transit.graphbased_v2.domain.graph.nodes.ObjectAttributeClazz;
-import com.transit.graphbased_v2.performacelogging.LogExecutionTime;
-import com.transit.graphbased_v2.transferobjects.AccessTransferComponent;
+import com.datatrust.graphbased_v2.domain.graph.nodes.ObjectAttributeClazz;
+import com.datatrust.graphbased_v2.performacelogging.LogExecutionTime;
+import com.datatrust.graphbased_v2.transferobjects.AccessTransferComponent;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;

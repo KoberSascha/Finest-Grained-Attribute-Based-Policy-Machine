@@ -1,7 +1,7 @@
-package com.transit.graphbased_v2.domain.graph.nodes;
+package com.datatrust.graphbased_v2.domain.graph.nodes;
 
+import com.datatrust.graphbased_v2.controller.dto.DigitsAccessDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.transit.graphbased_v2.controller.dto.DigitsAccessDTO;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;

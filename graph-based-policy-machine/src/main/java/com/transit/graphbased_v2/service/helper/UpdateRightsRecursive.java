@@ -1,8 +1,8 @@
-package com.transit.graphbased_v2.service.helper;
+package com.datatrust.graphbased_v2.service.helper;
 
-import com.transit.graphbased_v2.repository.ObjectAttributeClazzRepository;
-import com.transit.graphbased_v2.repository.RightsConnectionRepository;
-import com.transit.graphbased_v2.repository.RightsRepository;
+import com.datatrust.graphbased_v2.repository.ObjectAttributeClazzRepository;
+import com.datatrust.graphbased_v2.repository.RightsConnectionRepository;
+import com.datatrust.graphbased_v2.repository.RightsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

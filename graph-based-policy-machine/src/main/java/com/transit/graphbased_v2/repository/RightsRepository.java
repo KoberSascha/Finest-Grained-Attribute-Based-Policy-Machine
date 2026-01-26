@@ -1,9 +1,10 @@
-package com.transit.graphbased_v2.repository;
+package com.datatrust.graphbased_v2.repository;
 
-import com.transit.graphbased_v2.controller.dto.DigitsAccessDTO;
-import com.transit.graphbased_v2.domain.graph.nodes.*;
-import com.transit.graphbased_v2.service.helper.AccessValidator;
-import com.transit.graphbased_v2.service.helper.ParseRightsResult;
+import com.datatrust.graphbased_v2.controller.dto.DigitsAccessDTO;
+import com.datatrust.graphbased_v2.controller.dto.IdentityObjectRightsDTO;
+import com.datatrust.graphbased_v2.domain.graph.nodes.*;
+import com.datatrust.graphbased_v2.service.helper.AccessValidator;
+import com.datatrust.graphbased_v2.service.helper.ParseRightsResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,25 @@ public class RightsRepository {
     private AccessValidator accessValidator;
 
     public RightsRepository() {
+    }
+
+    /**
+     * Helper: add list property from a node into a target set.
+     * Comments in English as requested.
+     */
+    private static void addAllStrings(Set<String> target, org.neo4j.driver.types.Node node, String key) {
+        if (!node.containsKey(key) || node.get(key).isNull()) return;
+
+        // Expected: list of strings (like [] / ["id","name"]) :contentReference[oaicite:5]{index=5}
+        try {
+            for (String s : node.get(key).asList(val -> val.asString())) {
+                if (s != null && !s.isBlank()) target.add(s);
+            }
+        } catch (Exception ignored) {
+            // If somehow stored as single string, fallback:
+            String s = node.get(key).asString(null);
+            if (s != null && !s.isBlank()) target.add(s);
+        }
     }
 
     public List<ObjectAttributeExtendedClazz> getRightsList(Set<UUID> objectIds, UUID identityId, UUID requestedById, UUID applicationId) {
@@ -55,7 +75,6 @@ public class RightsRepository {
 
         return builder;
     }
-
 
     public Optional<ObjectAttributeExtendedClazz> getRights(UUID applicationId, UUID identityId, UUID requestedById, UUID oId) {
         StringBuilder builder = new StringBuilder();
@@ -238,7 +257,6 @@ public class RightsRepository {
         var result = graphRepository.execute(builder.toString(), false);
     }
 
-
     public void createOa(ObjectAttributeClazz oa) {
         StringBuilder builder = generateCreateOaQuery(oa);
         builder.append(" ");
@@ -324,7 +342,6 @@ public class RightsRepository {
         return Optional.of(r);
     }
 
-
     public Boolean createObject(UUID applicationId, UUID identityId, ObjectClazz oNode, ObjectAttributeClazz oaNode) {
 
         StringBuilder builder = new StringBuilder();
@@ -398,7 +415,6 @@ public class RightsRepository {
         return true;
     }
 
-
     public Optional<List<ObjectAttributeExtendedClazz>> checkIfAllNodesExistsForObject(UUID applicationId, UUID identityId, UUID oId, String entityClass) {
 
         StringBuilder builder = new StringBuilder();
@@ -424,7 +440,6 @@ public class RightsRepository {
         }
         return Optional.of(r);
     }
-
 
     public Optional<List<ObjectAttributeExtendedClazz>> checkIfAllNodesExistsForAccess(UUID applicationId, UUID identityId, UUID requestedById, UUID oId) {
 
@@ -463,7 +478,6 @@ public class RightsRepository {
         }
         return Optional.of(r);
     }
-
 
     public void deleteDigitAccess(UUID oaId) {
         StringBuilder builder = new StringBuilder();
@@ -604,7 +618,6 @@ public class RightsRepository {
         return parseResult.parseOAResultNodes(result, false, true);
     }
 
-
     public List<ObjectAttributeExtendedClazz> addPropertyToEntityByIdentity(UUID applicationId, UUID requestedById, String entityClass, String newProperty) {
 
         List<ObjectAttributeExtendedClazz> resultList = new ArrayList<>();
@@ -654,7 +667,6 @@ public class RightsRepository {
         });
         return resultList;
     }
-
 
     public List<ObjectAttributeExtendedClazz> renamePropertyOfEntityByIdentity(UUID applicationId, UUID requestedById, String entityClass, String oldProperty, String newProperty) {
 
@@ -781,4 +793,144 @@ public class RightsRepository {
         resultList.addAll(parseResult.parseOAResultNodes(result, false, true));
         return resultList;
     }
+
+    //get all access recursive for an object based on my oa down
+    public Optional<List<IdentityObjectRightsDTO>> getAllRightsForObjectWithDigitAccess(
+            UUID applicationId,
+            UUID requestedById,
+            UUID oId
+    ) {
+        StringBuilder b = new StringBuilder();
+
+        b.append("MATCH (a:A {id:'").append(applicationId).append("'})-[:application]->(:E)-[:entity]->(o:O {id:'")
+                .append(oId).append("'}) ");
+
+        b.append("MATCH (caller:I {id:'").append(requestedById).append("'})-[rCaller:relation]->(myOa:OA)<-[:assigned]-(o) ")
+                .append("WHERE rCaller.access = 1 ");
+
+        // --- NEW: build candidate identities via subquery + UNION
+        // Part 1: original candidates (must reach myOa via rights chain)
+        // Part 2: always include the "top/owner" identity (13d4...) if it has access=1 on an OA assigned to this object
+        b.append("CALL { ");
+        b.append("  WITH o, myOa ");
+        b.append("  MATCH (i:I)-[rAcc:relation]->(oaAcc:OA) ");
+        b.append("  WHERE rAcc.access = 1 ");
+        b.append("  MATCH (oaAcc)-[:rights*0..]->(myOa) ");
+        b.append("  MATCH (oaAcc)<-[:assigned]-(o) ");
+        b.append("  RETURN i, oaAcc ");
+        b.append("  UNION ");
+        b.append("  WITH o ");
+        b.append("  MATCH (i:I {id:'").append(requestedById).append("'})-[rAcc:relation]->(oaAcc:OA)<-[:assigned]-(o) ");
+        b.append("  WHERE rAcc.access = 1 ");
+        b.append("  RETURN i, oaAcc ");
+        b.append("} ");
+
+        // Collect OA nodes per identity
+        b.append("WITH o, i, collect(DISTINCT oaAcc) AS oas ");
+
+        b.append("UNWIND oas AS oneOa ");
+        b.append("OPTIONAL MATCH (from:I)-[rFrom:relation]->(oneOa) ")
+                .append("WHERE rFrom.control = 1 ");
+
+        b.append("WITH o, i, oas, head(collect(DISTINCT from)) AS sharedFromIdentity ");
+
+        b.append("OPTIONAL MATCH (i)-[rICtrl:relation]->(ctrlOa:OA)<-[:assigned]-(o) ")
+                .append("WHERE rICtrl.control = 1 ");
+
+        b.append("OPTIONAL MATCH (to:I)-[rToAcc:relation]->(ctrlOa) ")
+                .append("WHERE (rToAcc.access = 1) AND to.id <> i.id ");
+
+        // IMPORTANT: return "toIds" to match your Java mapping (record.get(\"toIds\"))
+        b.append("WITH o, i, oas, sharedFromIdentity, collect(DISTINCT to.id) AS toIds ");
+
+        b.append("WITH o, i, oas, sharedFromIdentity, toIds, ")
+                .append("CASE WHEN i.id = '").append(requestedById).append("' THEN 1 ELSE 0 END AS isCaller ");
+
+        b.append("RETURN i AS identity, o AS object, oas AS oas, sharedFromIdentity, toIds ");
+        b.append("ORDER BY isCaller DESC, identity.id ");
+
+
+        var result = graphRepository.execute(b.toString(), false);
+        if (!result.hasNext()) return Optional.empty();
+
+        List<IdentityObjectRightsDTO> out = new ArrayList<>();
+
+        while (result.hasNext()) {
+            var record = result.next();
+
+            var identityNode = record.get("identity").asNode();
+            UUID identityId = UUID.fromString(identityNode.get("id").asString());
+
+            var objectNode = record.get("object").asNode();
+            UUID objectId = UUID.fromString(objectNode.get("id").asString());
+            String entityClass = objectNode.get("entityClass").asString();
+
+            IdentityObjectRightsDTO dto = new IdentityObjectRightsDTO();
+            dto.setIdentityId(identityId);
+            dto.setObjectId(objectId);
+            dto.setEntityClass(entityClass);
+
+            // sharedFromIdentityId = controller.id (if present)
+            if (!record.get("sharedFromIdentity").isNull()) {
+                var ctrlNode = record.get("sharedFromIdentity").asNode();
+                dto.setSharedFromIdentityId(UUID.fromString(ctrlNode.get("id").asString()));
+            }
+
+            // sharedToIdentityIds = toIds (UUID list), optional: remove self
+            if (!record.get("toIds").isNull()) {
+                Set<UUID> sharedTo = new HashSet<>();
+                for (var v : record.get("toIds").values()) {
+                    if (v == null || v.isNull()) continue;
+                    UUID toId = UUID.fromString(v.asString());
+                    if (!toId.equals(identityId)) sharedTo.add(toId); // optional: exclude self
+                }
+                dto.setSharedToIdentityIds(sharedTo);
+            }
+
+            // merge properties from all OA nodes
+            var oaValues = record.get("oas");
+            for (var v : oaValues.values()) {
+                var oaNode = v.asNode();
+                addAllStrings(dto.getReadProperties(), oaNode, "readProperties");
+                addAllStrings(dto.getWriteProperties(), oaNode, "writeProperties");
+                addAllStrings(dto.getShareReadProperties(), oaNode, "shareReadProperties");
+                addAllStrings(dto.getShareWriteProperties(), oaNode, "shareWriteProperties");
+            }
+
+            out.add(dto);
+        }
+
+        return Optional.of(out);
+    }
+
+
+    /**
+     * Helper that can handle different Neo4j value types (String, List, etc.)
+     * and applies them to the corresponding OA property set.
+     * <p>
+     * NOTE: Comments in English as you prefer.
+     */
+    private void applyRightsValue(ObjectAttributeExtendedClazz oa, String targetKey, org.neo4j.driver.Value value) {
+        if (value == null || value.isNull()) return;
+
+        // Case 1: list of strings
+        if (value.type().name().equalsIgnoreCase("LIST")) {
+            for (String s : value.asList(v -> v.asString())) {
+                if (s != null && !s.isBlank()) oa.addProperty(targetKey, s);
+            }
+            return;
+        }
+
+        // Case 2: single string (maybe JSON string)
+        String s = value.asString(null);
+        if (s == null || s.isBlank()) return;
+
+        // If it's JSON map string, you can parse values:
+        // Map<String,String> m = ObjectAttributeExtendedClazz.getPropertiesFromString(s);
+        // if (m != null) m.values().forEach(v -> oa.addProperty(targetKey, v));
+        //
+        // Otherwise treat it as a single property:
+        oa.addProperty(targetKey, s);
+    }
+
 }

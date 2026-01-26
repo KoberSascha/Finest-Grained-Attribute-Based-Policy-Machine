@@ -1,10 +1,10 @@
-package com.transit.graphbased_v2.controller;
+package com.datatrust.graphbased_v2.controller;
 
-import com.transit.graphbased_v2.controller.dto.ObjectDTO;
-import com.transit.graphbased_v2.exceptions.BadRequestException;
-import com.transit.graphbased_v2.exceptions.ValidationException;
-import com.transit.graphbased_v2.service.ApplicationService;
-import com.transit.graphbased_v2.service.ObjectService;
+import com.datatrust.graphbased_v2.controller.dto.ObjectDTO;
+import com.datatrust.graphbased_v2.exceptions.BadRequestException;
+import com.datatrust.graphbased_v2.exceptions.ValidationException;
+import com.datatrust.graphbased_v2.service.ApplicationService;
+import com.datatrust.graphbased_v2.service.ObjectService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

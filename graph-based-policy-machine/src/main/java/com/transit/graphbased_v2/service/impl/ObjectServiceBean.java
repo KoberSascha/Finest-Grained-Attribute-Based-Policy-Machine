@@ -1,18 +1,18 @@
-package com.transit.graphbased_v2.service.impl;
+package com.datatrust.graphbased_v2.service.impl;
 
-import com.transit.graphbased_v2.controller.dto.ObjectDTO;
-import com.transit.graphbased_v2.controller.dto.ObjectResponseDTO;
-import com.transit.graphbased_v2.domain.graph.nodes.ClazzType;
-import com.transit.graphbased_v2.domain.graph.nodes.EntityClazz;
-import com.transit.graphbased_v2.domain.graph.nodes.ObjectAttributeClazz;
-import com.transit.graphbased_v2.domain.graph.nodes.ObjectClazz;
-import com.transit.graphbased_v2.domain.graph.relationships.EntityConnection;
-import com.transit.graphbased_v2.domain.graph.relationships.Relationship;
-import com.transit.graphbased_v2.exceptions.*;
-import com.transit.graphbased_v2.performacelogging.LogExecutionTime;
-import com.transit.graphbased_v2.repository.*;
-import com.transit.graphbased_v2.service.ObjectService;
-import com.transit.graphbased_v2.service.helper.UpdateRightsRecursive;
+import com.datatrust.graphbased_v2.controller.dto.ObjectDTO;
+import com.datatrust.graphbased_v2.controller.dto.ObjectResponseDTO;
+import com.datatrust.graphbased_v2.domain.graph.nodes.ClazzType;
+import com.datatrust.graphbased_v2.domain.graph.nodes.EntityClazz;
+import com.datatrust.graphbased_v2.domain.graph.nodes.ObjectAttributeClazz;
+import com.datatrust.graphbased_v2.domain.graph.nodes.ObjectClazz;
+import com.datatrust.graphbased_v2.domain.graph.relationships.EntityConnection;
+import com.datatrust.graphbased_v2.domain.graph.relationships.Relationship;
+import com.datatrust.graphbased_v2.exceptions.*;
+import com.datatrust.graphbased_v2.performacelogging.LogExecutionTime;
+import com.datatrust.graphbased_v2.repository.*;
+import com.datatrust.graphbased_v2.service.ObjectService;
+import com.datatrust.graphbased_v2.service.helper.UpdateRightsRecursive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,9 +1,9 @@
-package com.transit.graphbased_v2.service;
+package com.datatrust.graphbased_v2.service;
 
-import com.transit.graphbased_v2.controller.dto.ObjectDTO;
-import com.transit.graphbased_v2.controller.dto.ObjectResponseDTO;
-import com.transit.graphbased_v2.exceptions.BadRequestException;
-import com.transit.graphbased_v2.exceptions.ForbiddenException;
+import com.datatrust.graphbased_v2.controller.dto.ObjectDTO;
+import com.datatrust.graphbased_v2.controller.dto.ObjectResponseDTO;
+import com.datatrust.graphbased_v2.exceptions.BadRequestException;
+import com.datatrust.graphbased_v2.exceptions.ForbiddenException;
 
 import java.util.Optional;
 import java.util.UUID;

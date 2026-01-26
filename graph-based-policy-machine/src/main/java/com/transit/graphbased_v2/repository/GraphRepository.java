@@ -1,7 +1,7 @@
-package com.transit.graphbased_v2.repository;
+package com.datatrust.graphbased_v2.repository;
 
-import com.transit.graphbased_v2.config.StartConfiguration;
-import com.transit.graphbased_v2.service.helper.ParseRightsResult;
+import com.datatrust.graphbased_v2.config.StartConfiguration;
+import com.datatrust.graphbased_v2.service.helper.ParseRightsResult;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.neo4j.driver.AuthTokens;

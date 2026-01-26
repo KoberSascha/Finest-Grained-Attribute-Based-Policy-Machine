@@ -1,9 +1,9 @@
-package com.transit.graphbased_v2.repository;
+package com.datatrust.graphbased_v2.repository;
 
-import com.transit.graphbased_v2.common.ConnectionType;
-import com.transit.graphbased_v2.common.RightsConstants;
-import com.transit.graphbased_v2.domain.graph.relationships.RelationshipConnection;
-import com.transit.graphbased_v2.performacelogging.LogExecutionTime;
+import com.datatrust.graphbased_v2.common.ConnectionType;
+import com.datatrust.graphbased_v2.common.RightsConstants;
+import com.datatrust.graphbased_v2.domain.graph.relationships.RelationshipConnection;
+import com.datatrust.graphbased_v2.performacelogging.LogExecutionTime;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Value;
 import org.springframework.stereotype.Component;

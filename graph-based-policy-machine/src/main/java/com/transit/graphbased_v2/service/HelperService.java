@@ -1,8 +1,8 @@
-package com.transit.graphbased_v2.service;
+package com.datatrust.graphbased_v2.service;
 
-import com.transit.graphbased_v2.controller.dto.EntityPropertiesDTO;
-import com.transit.graphbased_v2.exceptions.BadRequestException;
-import com.transit.graphbased_v2.exceptions.ForbiddenException;
+import com.datatrust.graphbased_v2.controller.dto.EntityPropertiesDTO;
+import com.datatrust.graphbased_v2.exceptions.BadRequestException;
+import com.datatrust.graphbased_v2.exceptions.ForbiddenException;
 
 import java.util.UUID;
 

@@ -1,8 +1,8 @@
-package com.transit.graphbased_v2.domain.graph.relationships;
+package com.datatrust.graphbased_v2.domain.graph.relationships;
 
 
-import com.transit.graphbased_v2.domain.graph.nodes.ClazzType;
-import com.transit.graphbased_v2.exceptions.BadRequestException;
+import com.datatrust.graphbased_v2.domain.graph.nodes.ClazzType;
+import com.datatrust.graphbased_v2.exceptions.BadRequestException;
 
 import java.io.Serializable;
 import java.util.EnumMap;
