@@ -2,12 +2,20 @@ DROP INDEX ControlRelation IF EXISTS;
 DROP INDEX AccessRelation IF EXISTS;
 DROP INDEX OwnsRelation IF EXISTS;
 
+DROP INDEX ANodes IF EXISTS;
 DROP INDEX ENodes IF EXISTS;
 DROP INDEX ONodes IF EXISTS;
 DROP INDEX OANodes IF EXISTS;
 DROP INDEX INodes IF EXISTS;
 
 DROP INDEX EEntityCLass IF EXISTS;
+
+
+CREATE INDEX ANodes
+FOR (a:A)
+ON (a.id)
+REQUIRE A.id IS UNIQUE;
+
 
 CREATE INDEX ENodes
 FOR (e:E)
@@ -23,8 +31,8 @@ ON (oa.id);
 
 CREATE INDEX INodes
 FOR (i:I)
-ON (i.id);
-
+ON (i.id)
+REQUIRE i.id IS UNIQUE;
 
 CREATE INDEX EEntityCLass FOR (e:E)
 ON (e.entityClass);
